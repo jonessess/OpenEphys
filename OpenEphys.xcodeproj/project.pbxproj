@@ -38,6 +38,7 @@
 		E16A0C9A1B5FF01900FB8EC1 /* MWorksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */; };
 		E16A0C9D1B5FF07100FB8EC1 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */; };
 		E16A0C9F1B5FF09800FB8EC1 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */; };
+		E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,8 @@
 		E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MWorksCore.framework; path = /Library/Frameworks/MWorksCore.framework; sourceTree = "<absolute>"; };
 		E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = "/Library/Application Support/MWorks/Developer/lib/libboost_system.a"; sourceTree = "<absolute>"; };
 		E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "/Library/Application Support/MWorks/Developer/lib/libzmq.a"; sourceTree = "<absolute>"; };
+		E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysInterface.cpp; sourceTree = "<group>"; };
+		E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEphysInterface.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 		E16A0C7F1B5FE6DA00FB8EC1 /* OpenEphys */ = {
 			isa = PBXGroup;
 			children = (
+				E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */,
+				E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */,
 				E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */,
 				E16A0C801B5FE6DA00FB8EC1 /* Supporting Files */,
 			);
@@ -227,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16A0C971B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp in Sources */,
+				E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

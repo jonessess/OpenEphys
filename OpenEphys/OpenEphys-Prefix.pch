@@ -9,10 +9,14 @@
 #ifndef OpenEphys_OpenEphys_Prefix_pch
 #define OpenEphys_OpenEphys_Prefix_pch
 
+#include <zmq.h>
+
 #ifdef __cplusplus
 
 #include <boost/noncopyable.hpp>
+#include <boost/thread/thread.hpp>
 
+#include <MWorksCore/ExpressionVariable.h>
 #include <MWorksCore/IODevice.h>
 #include <MWorksCore/Plugin.h>
 #include <MWorksCore/StandardComponentFactory.h>
