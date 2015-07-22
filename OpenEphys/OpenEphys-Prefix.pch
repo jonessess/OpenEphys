@@ -1,0 +1,22 @@
+//
+//  OpenEphys-Prefix.pch
+//  OpenEphys
+//
+//  Created by Christopher Stawarz on 7/22/15.
+//  Copyright (c) 2015 The MWorks Project. All rights reserved.
+//
+
+#ifndef OpenEphys_OpenEphys_Prefix_pch
+#define OpenEphys_OpenEphys_Prefix_pch
+
+#ifdef __cplusplus
+
+#include <boost/noncopyable.hpp>
+
+#include <MWorksCore/IODevice.h>
+#include <MWorksCore/Plugin.h>
+#include <MWorksCore/StandardComponentFactory.h>
+
+#endif /* defined(__cplusplus) */
+
+#endif /* !defined(OpenEphys_OpenEphys_Prefix_pch) */
