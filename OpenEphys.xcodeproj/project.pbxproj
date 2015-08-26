@@ -39,6 +39,7 @@
 		E16A0C9D1B5FF07100FB8EC1 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */; };
 		E16A0C9F1B5FF09800FB8EC1 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */; };
 		E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */; };
+		E1A960B61B8E4E43003EEA23 /* MWLibrary.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "/Library/Application Support/MWorks/Developer/lib/libzmq.a"; sourceTree = "<absolute>"; };
 		E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysInterface.cpp; sourceTree = "<group>"; };
 		E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEphysInterface.h; sourceTree = "<group>"; };
+		E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MWLibrary.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 			children = (
 				E16A0C811B5FE6DA00FB8EC1 /* Info.plist */,
 				E16A0C981B5FEA5600FB8EC1 /* OpenEphys-Prefix.pch */,
+				E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1A960B61B8E4E43003EEA23 /* MWLibrary.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +333,7 @@
 				E16A0C8C1B5FE91600FB8EC1 /* Development */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
 		};
 		E16A0C921B5FE96000FB8EC1 /* Build configuration list for PBXAggregateTarget "Everything" */ = {
 			isa = XCConfigurationList;
@@ -336,6 +341,7 @@
 				E16A0C931B5FE96000FB8EC1 /* Development */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
 		};
 /* End XCConfigurationList section */
 	};

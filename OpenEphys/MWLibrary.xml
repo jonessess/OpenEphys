@@ -1,0 +1,26 @@
+<MWElements>
+
+  <MWElement name="Open Ephys Interface">
+    <match_signature>iodevice[@type="open_ephys_interface"]</match_signature>
+    
+    <isa>IODevice</isa>
+
+    <icon>smallIOFolder</icon>
+    
+    <description>
+Interface to the Open Ephys GUI application.  Requires an OE Event Broadcaster sink listening on the specified hostname and port.
+    </description>
+    
+    <code>
+      <iodevice type="open_ephys_interface"
+                tag="Open Ephys Interface"
+                hostname="localhost"
+                port="5557"
+                sync=""
+                sync_channels=""
+                spikes=""
+                />
+    </code>
+  </MWElement>
+
+</MWElements>

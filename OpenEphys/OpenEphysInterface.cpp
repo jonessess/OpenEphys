@@ -250,7 +250,7 @@ void OpenEphysInterface::handleEvents() {
             int syncReceived = 0;
             
             for (std::size_t i = 0; i < syncChannels.size(); i++) {
-                auto channelState = bool(event.ttlWord.word & (1 << syncChannels.at(i)));
+                bool channelState = event.ttlWord.word & (1 << syncChannels.at(i));
                 syncReceived |= int(channelState) << i;
             }
             
