@@ -95,7 +95,9 @@ OpenEphysInterface::OpenEphysInterface(const ParameterValueMap &parameters) :
     sync(parameters[SYNC]),
     zmqContext(nullptr, zmq_ctx_term),
     zmqSocket(nullptr, zmq_close),
-    running(false)
+    running(false),
+    lastSyncTime(0),
+    lastSyncValue(-1)
 {
     std::vector<Datum> syncChannelsValues;
     ParsedExpressionVariable::evaluateExpressionList(parameters[SYNC_CHANNELS].str(), syncChannelsValues);
@@ -134,8 +136,7 @@ bool OpenEphysInterface::initialize() {
         return false;
     }
     
-    // Set receive timeout to half of sync interval
-    const int recvTimeout = (syncInterval / 2) / 1000;  // ms
+    const int recvTimeout = 500;  // ms
     if (0 != zmq_setsockopt(zmqSocket.get(), ZMQ_RCVTIMEO, &recvTimeout, sizeof(recvTimeout))) {
         logZMQError("Unable to set ZeroMQ socket receive timeout");
         return false;
@@ -146,6 +147,9 @@ bool OpenEphysInterface::initialize() {
     {
         return false;
     }
+    
+    auto notification = boost::make_shared<SyncNotification>(component_shared_from_this<OpenEphysInterface>());
+    sync->addNotification(notification);
     
     return true;
 }
@@ -200,11 +204,7 @@ bool OpenEphysInterface::subscribeToEventType(std::uint8_t type) {
 
 
 void OpenEphysInterface::handleEvents() {
-    const std::size_t numSyncValues = 1 << syncChannels.size();
-    
-    MWTime lastSyncTime = 0;
-    int lastSyncValue = 0;
-    int lastSyncReceived = 0;
+    int lastSyncReceived = -1;
     MWTime oeClockOffset = 0;
     
     constexpr MWTime syncReceiptCheckInterval = 5000000;  // 5 seconds
@@ -212,21 +212,12 @@ void OpenEphysInterface::handleEvents() {
     MWTime lastSyncReceiptCheckTime = lastSyncReceivedTime;
     
     while (true) {
-        if (!lastSyncTime || (currentTimeUS() - lastSyncTime >= syncInterval)) {
-            const int syncValue = (lastSyncValue + 1) % numSyncValues;
-            sync->setValue(syncValue);
-            lastSyncTime = currentTimeUS();  // Record time *after* sync value has been set
-            lastSyncValue = syncValue;
-        }
-        
-        {
-            const MWTime currentSyncReceiptCheckTime = currentTimeUS();
-            if (currentSyncReceiptCheckTime - lastSyncReceiptCheckTime >= syncReceiptCheckInterval) {
-                merror(M_IODEVICE_MESSAGE_DOMAIN,
-                       "No Open Ephys clock sync received after %g seconds",
-                       std::round(double(currentSyncReceiptCheckTime - lastSyncReceivedTime) / 1e6));
-                lastSyncReceiptCheckTime = currentSyncReceiptCheckTime;
-            }
+        const MWTime currentSyncReceiptCheckTime = currentTimeUS();
+        if (currentSyncReceiptCheckTime - lastSyncReceiptCheckTime >= syncReceiptCheckInterval) {
+            merror(M_IODEVICE_MESSAGE_DOMAIN,
+                   "No Open Ephys clock sync received after %g seconds",
+                   std::round(double(currentSyncReceiptCheckTime - lastSyncReceivedTime) / 1e6));
+            lastSyncReceiptCheckTime = currentSyncReceiptCheckTime;
         }
         
         std::uint8_t eventType = 0;
@@ -264,22 +255,19 @@ void OpenEphysInterface::handleEvents() {
             }
             
             if (syncReceived != lastSyncReceived) {
+                scoped_lock lock(mutex);
+                
+                lastSyncReceived = syncReceived;
                 lastSyncReceivedTime = currentTimeUS();
                 lastSyncReceiptCheckTime = lastSyncReceivedTime;
                 
                 if (syncReceived == lastSyncValue) {
-                    lastSyncReceived = syncReceived;
                     oeClockOffset = lastSyncTime - secsToUS(eventTimestamp);
                 } else {
                     merror(M_IODEVICE_MESSAGE_DOMAIN,
                            "Open Ephys clock sync values don't match: sent %d, received %d",
                            lastSyncValue,
                            syncReceived);
-                    
-                    // Reset things and start over
-                    lastSyncTime = 0;
-                    lastSyncValue = 0;
-                    lastSyncReceived = 0;
                 }
             }
         
@@ -299,6 +287,15 @@ void OpenEphysInterface::terminateEventHandlerThread() {
     if (eventHandlerThread.joinable()) {
         eventHandlerThread.interrupt();
         eventHandlerThread.join();
+    }
+}
+
+
+void OpenEphysInterface::SyncNotification::notify(const Datum &data, MWTime time) {
+    if (auto oeInterface = oeInterfaceWeak.lock()) {
+        scoped_lock lock(oeInterface->mutex);
+        oeInterface->lastSyncTime = time;
+        oeInterface->lastSyncValue = data.getInteger();
     }
 }
 

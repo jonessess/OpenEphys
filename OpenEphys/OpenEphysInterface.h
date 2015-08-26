@@ -35,8 +35,6 @@ private:
     static constexpr std::uint8_t SPIKE = 4;
     static constexpr std::uint8_t TTL_WORD = 7;
     
-    static constexpr MWTime syncInterval = 1000000;  // 1 second
-    
     bool subscribeToEventType(std::uint8_t type);
     void handleEvents();
     void terminateEventHandlerThread();
@@ -54,6 +52,21 @@ private:
     boost::mutex mutex;
     
     bool running;
+    MWTime lastSyncTime;
+    int lastSyncValue;
+    
+    
+    class SyncNotification : public VariableNotification {
+    public:
+        explicit SyncNotification(const boost::shared_ptr<OpenEphysInterface> &oeInterface) :
+            oeInterfaceWeak(oeInterface)
+        { }
+        
+        void notify(const Datum &data, MWTime time) override;
+        
+    private:
+        const boost::weak_ptr<OpenEphysInterface> oeInterfaceWeak;
+    };
     
 };
 
