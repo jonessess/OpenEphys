@@ -32,13 +32,6 @@ inline MWTime secsToUS(double timestamp) {
 
 struct OpenEphysEvent {
     
-    struct TTL {
-        std::uint8_t nodeID;
-        std::uint8_t eventID;  // Line state
-        std::uint8_t eventChannel;
-        /* Other fields ignored */
-    };
-    
     struct Spike {
         std::int64_t timestamp;
         std::int64_t timestampSoftware;
@@ -51,16 +44,25 @@ struct OpenEphysEvent {
         /* Other fields ignored */
     } __attribute__((packed));
     
+    struct TTLWord {
+        std::uint8_t nodeID;
+        std::uint8_t eventID;
+        std::uint8_t eventChannel;
+        std::uint8_t _savingFlag;
+        std::uint8_t sourceNodeID;
+        std::uint64_t word;
+    } __attribute__((packed));
+    
     union {
-        TTL ttl;
         Spike spike;
+        TTLWord ttlWord;
     };
     
 };
 
 // Verify packing
-BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::TTL) == 3);
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::Spike) == 28);
+BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::TTLWord) == 13);
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent) == sizeof(OpenEphysEvent::Spike));
 
 
@@ -102,9 +104,6 @@ OpenEphysInterface::OpenEphysInterface(const ParameterValueMap &parameters) :
         if (channelNumber < 1 || channelNumber > 8) {
             throw SimpleException(M_IODEVICE_MESSAGE_DOMAIN, "Invalid sync channel number");
         }
-        if (!syncChannels.empty() && (channelNumber <= syncChannels.back())) {
-            throw SimpleException(M_IODEVICE_MESSAGE_DOMAIN, "Sync channel numbers must be in ascending order");
-        }
         syncChannels.push_back(channelNumber - 1);
     }
     if (syncChannels.empty()) {
@@ -142,8 +141,8 @@ bool OpenEphysInterface::initialize() {
         return false;
     }
     
-    if (!subscribeToEventType(TTL) ||
-        (spikes && !subscribeToEventType(SPIKE)))
+    if ((spikes && !subscribeToEventType(SPIKE)) ||
+        !subscribeToEventType(TTL_WORD))
     {
         return false;
     }
@@ -205,7 +204,7 @@ void OpenEphysInterface::handleEvents() {
     
     MWTime lastSyncTime = 0;
     int lastSyncValue = 0;
-    int currentOESyncValue = 0;
+    int lastSyncReceived = 0;
     MWTime oeClockOffset = 0;
     
     constexpr MWTime syncReceiptCheckInterval = 5000000;  // 5 seconds
@@ -215,14 +214,7 @@ void OpenEphysInterface::handleEvents() {
     while (true) {
         if (!lastSyncTime || (currentTimeUS() - lastSyncTime >= syncInterval)) {
             const int syncValue = (lastSyncValue + 1) % numSyncValues;
-            
-            int reversedSyncValue = 0;
-            for (std::size_t i = 0; i < syncChannels.size(); i++) {
-                reversedSyncValue <<= 1;
-                reversedSyncValue |= (syncValue & (1 << i)) >> i;
-            }
-            sync->setValue(reversedSyncValue);
-            
+            sync->setValue(syncValue);
             lastSyncTime = currentTimeUS();  // Record time *after* sync value has been set
             lastSyncValue = syncValue;
         }
@@ -251,40 +243,6 @@ void OpenEphysInterface::handleEvents() {
                 logZMQError("Received failed on ZeroMQ socket");
             }
             
-        } else if (TTL == eventType) {
-            
-            for (std::size_t i = 0; i < syncChannels.size(); i++) {
-                if (event.ttl.eventChannel == syncChannels.at(i)) {
-                    const int mask = 1 << (syncChannels.size() - 1 - i);
-                    if (event.ttl.eventID) {
-                        currentOESyncValue |= mask;
-                    } else {
-                        currentOESyncValue &= ~mask;
-                    }
-                    
-                    if (i == syncChannels.size() - 1) {
-                        lastSyncReceivedTime = currentTimeUS();
-                        lastSyncReceiptCheckTime = lastSyncReceivedTime;
-                        
-                        if (currentOESyncValue == lastSyncValue) {
-                            oeClockOffset = lastSyncTime - secsToUS(eventTimestamp);
-                        } else {
-                            merror(M_IODEVICE_MESSAGE_DOMAIN,
-                                   "Open Ephys clock sync values don't match: sent %d, received %d",
-                                   lastSyncValue,
-                                   currentOESyncValue);
-                            
-                            // Reset things and start over
-                            lastSyncTime = 0;
-                            lastSyncValue = 0;
-                            currentOESyncValue = 0;
-                        }
-                    }
-                    
-                    break;
-                }
-            }
-            
         } else if (SPIKE == eventType) {
             
             if (spikes) {
@@ -296,6 +254,35 @@ void OpenEphysInterface::handleEvents() {
                 spikes->setValue(info, secsToUS(eventTimestamp) + oeClockOffset);
             }
             
+        } else if (TTL_WORD == eventType) {
+            
+            int syncReceived = 0;
+            
+            for (std::size_t i = 0; i < syncChannels.size(); i++) {
+                auto channelState = bool(event.ttlWord.word & (1 << syncChannels.at(i)));
+                syncReceived |= int(channelState) << i;
+            }
+            
+            if (syncReceived != lastSyncReceived) {
+                lastSyncReceivedTime = currentTimeUS();
+                lastSyncReceiptCheckTime = lastSyncReceivedTime;
+                
+                if (syncReceived == lastSyncValue) {
+                    lastSyncReceived = syncReceived;
+                    oeClockOffset = lastSyncTime - secsToUS(eventTimestamp);
+                } else {
+                    merror(M_IODEVICE_MESSAGE_DOMAIN,
+                           "Open Ephys clock sync values don't match: sent %d, received %d",
+                           lastSyncValue,
+                           syncReceived);
+                    
+                    // Reset things and start over
+                    lastSyncTime = 0;
+                    lastSyncValue = 0;
+                    lastSyncReceived = 0;
+                }
+            }
+        
         } else {
             
             merror(M_IODEVICE_MESSAGE_DOMAIN, "Open Ephys event has unexpected type (%hhu)", eventType);
