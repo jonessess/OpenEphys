@@ -20,6 +20,7 @@ public:
     static const std::string PORT;
     static const std::string SYNC;
     static const std::string SYNC_CHANNELS;
+    static const std::string CLOCK_OFFSET;
     static const std::string SPIKES;
     
     static void describeComponent(ComponentInfo &info);
@@ -42,6 +43,7 @@ private:
     const std::string endpoint;
     const VariablePtr sync;
     std::vector<std::uint8_t> syncChannels;
+    VariablePtr clockOffset;
     VariablePtr spikes;
     
     std::unique_ptr<void, decltype(&zmq_ctx_term)> zmqContext;

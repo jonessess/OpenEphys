@@ -73,6 +73,7 @@ const std::string OpenEphysInterface::HOSTNAME("hostname");
 const std::string OpenEphysInterface::PORT("port");
 const std::string OpenEphysInterface::SYNC("sync");
 const std::string OpenEphysInterface::SYNC_CHANNELS("sync_channels");
+const std::string OpenEphysInterface::CLOCK_OFFSET("clock_offset");
 const std::string OpenEphysInterface::SPIKES("spikes");
 
 
@@ -85,6 +86,7 @@ void OpenEphysInterface::describeComponent(ComponentInfo &info) {
     info.addParameter(PORT);
     info.addParameter(SYNC);
     info.addParameter(SYNC_CHANNELS);
+    info.addParameter(CLOCK_OFFSET, false);
     info.addParameter(SPIKES, false);
 }
 
@@ -110,6 +112,10 @@ OpenEphysInterface::OpenEphysInterface(const ParameterValueMap &parameters) :
     }
     if (syncChannels.empty()) {
         throw SimpleException(M_IODEVICE_MESSAGE_DOMAIN, "At least one sync channel is required");
+    }
+    
+    if (!parameters[CLOCK_OFFSET].empty()) {
+        clockOffset = VariablePtr(parameters[CLOCK_OFFSET]);
     }
     
     if (!parameters[SPIKES].empty()) {
@@ -263,9 +269,12 @@ void OpenEphysInterface::handleEvents() {
                 
                 if (syncReceived == lastSyncValue) {
                     oeClockOffset = lastSyncTime - secsToUS(eventTimestamp);
+                    if (clockOffset) {
+                        clockOffset->setValue(oeClockOffset);
+                    }
                 } else {
                     merror(M_IODEVICE_MESSAGE_DOMAIN,
-                           "Open Ephys clock sync values don't match: sent %d, received %d",
+                           "Open Ephys clock sync has unexpected value: sent %d, received %d",
                            lastSyncValue,
                            syncReceived);
                 }

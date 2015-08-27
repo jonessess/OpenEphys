@@ -18,6 +18,7 @@ Interface to the Open Ephys GUI application.  Requires an OE Event Broadcaster s
                 port="5557"
                 sync=""
                 sync_channels=""
+                clock_offset=""
                 spikes=""
                 />
     </code>
