@@ -32,6 +32,15 @@ inline MWTime secsToUS(double timestamp) {
 
 struct OpenEphysEvent {
     
+    struct TTL {
+        std::uint8_t nodeID;
+        std::uint8_t eventID;
+        std::uint8_t eventChannel;
+        std::uint8_t _savingFlag;
+        std::uint8_t sourceNodeID;
+        std::uint64_t word;
+    } __attribute__((packed));
+    
     struct Spike {
         std::int64_t timestamp;
         std::int64_t timestampSoftware;
@@ -44,25 +53,16 @@ struct OpenEphysEvent {
         /* Other fields ignored */
     } __attribute__((packed));
     
-    struct TTLWord {
-        std::uint8_t nodeID;
-        std::uint8_t eventID;
-        std::uint8_t eventChannel;
-        std::uint8_t _savingFlag;
-        std::uint8_t sourceNodeID;
-        std::uint64_t word;
-    } __attribute__((packed));
-    
     union {
+        TTL ttl;
         Spike spike;
-        TTLWord ttlWord;
     };
     
 };
 
 // Verify packing
+BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::TTL) == 13);
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::Spike) == 28);
-BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::TTLWord) == 13);
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent) == sizeof(OpenEphysEvent::Spike));
 
 
@@ -148,8 +148,8 @@ bool OpenEphysInterface::initialize() {
         return false;
     }
     
-    if ((spikes && !subscribeToEventType(SPIKE)) ||
-        !subscribeToEventType(TTL_WORD))
+    if (!subscribeToEventType(TTL) ||
+        (spikes && !subscribeToEventType(SPIKE)))
     {
         return false;
     }
@@ -240,23 +240,12 @@ void OpenEphysInterface::handleEvents() {
                 logZMQError("Received failed on ZeroMQ socket");
             }
             
-        } else if (SPIKE == eventType) {
-            
-            if (spikes) {
-                Datum info(M_DICTIONARY, 4);
-                info.addElement("oe_timestamp", event.spike.timestamp);
-                info.addElement("sorted_id", event.spike.sortedID);
-                info.addElement("electrode_id", event.spike.electrodeID);
-                info.addElement("channel", event.spike.channel);
-                spikes->setValue(info, secsToUS(eventTimestamp) + oeClockOffset);
-            }
-            
-        } else if (TTL_WORD == eventType) {
+        } else if (TTL == eventType) {
             
             int syncReceived = 0;
             
             for (std::size_t i = 0; i < syncChannels.size(); i++) {
-                bool channelState = event.ttlWord.word & (1 << syncChannels.at(i));
+                bool channelState = event.ttl.word & (1 << syncChannels.at(i));
                 syncReceived |= int(channelState) << i;
             }
             
@@ -278,6 +267,17 @@ void OpenEphysInterface::handleEvents() {
                            lastSyncValue,
                            syncReceived);
                 }
+            }
+            
+        } else if (SPIKE == eventType) {
+            
+            if (spikes) {
+                Datum info(M_DICTIONARY, 4);
+                info.addElement("oe_timestamp", event.spike.timestamp);
+                info.addElement("sorted_id", event.spike.sortedID);
+                info.addElement("electrode_id", event.spike.electrodeID);
+                info.addElement("channel", event.spike.channel);
+                spikes->setValue(info, secsToUS(eventTimestamp) + oeClockOffset);
             }
         
         } else {

@@ -33,8 +33,8 @@ public:
     bool stopDeviceIO() override;
     
 private:
+    static constexpr std::uint8_t TTL = 3;
     static constexpr std::uint8_t SPIKE = 4;
-    static constexpr std::uint8_t TTL_WORD = 7;
     
     bool subscribeToEventType(std::uint8_t type);
     void handleEvents();
