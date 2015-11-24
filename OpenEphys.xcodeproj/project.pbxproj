@@ -40,6 +40,7 @@
 		E16A0C9F1B5FF09800FB8EC1 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */; };
 		E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */; };
 		E1A960B61B8E4E43003EEA23 /* MWLibrary.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */; };
+		E1E07EB11C04F4FC008DD97E /* MWComponents.yaml in Resources */ = {isa = PBXBuildFile; fileRef = E1E07EB01C04F4FC008DD97E /* MWComponents.yaml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysInterface.cpp; sourceTree = "<group>"; };
 		E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEphysInterface.h; sourceTree = "<group>"; };
 		E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MWLibrary.xml; sourceTree = "<group>"; };
+		E1E07EB01C04F4FC008DD97E /* MWComponents.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MWComponents.yaml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 			children = (
 				E16A0C811B5FE6DA00FB8EC1 /* Info.plist */,
 				E16A0C981B5FEA5600FB8EC1 /* OpenEphys-Prefix.pch */,
+				E1E07EB01C04F4FC008DD97E /* MWComponents.yaml */,
 				E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */,
 			);
 			name = "Supporting Files";
@@ -224,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1E07EB11C04F4FC008DD97E /* MWComponents.yaml in Resources */,
 				E1A960B61B8E4E43003EEA23 /* MWLibrary.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
