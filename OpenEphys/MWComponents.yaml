@@ -1,0 +1,27 @@
+---
+
+
+name: Open Ephys Interface
+signature: iodevice/open_ephys_interface
+isa: IODevice
+icon: smallIOFolder
+description: >
+    Interface to the Open Ephys GUI application.  Requires an OE Event
+    Broadcaster sink listening on the specified hostname and port.
+parameters: 
+  - 
+    name: hostname
+    default: localhost
+  - 
+    name: port
+    default: 5557
+  - 
+    name: sync
+  - 
+    name: sync_channels
+  - 
+    name: clock_offset
+  - 
+    name: spikes
+
+
