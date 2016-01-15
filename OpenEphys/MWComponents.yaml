@@ -6,19 +6,24 @@ signature: iodevice/open_ephys_interface
 isa: IODevice
 icon: smallIOFolder
 description: >
-    Interface to the Open Ephys GUI application.  Requires an OE Event
-    Broadcaster sink listening on the specified hostname and port.
+    Interface to the `Open Ephys GUI <http://www.open-ephys.org/gui/>`_
+    application.  Requires an Open Ephys Event Broadcaster sink listening on the
+    specified hostname and port.
 parameters: 
   - 
     name: hostname
-    default: localhost
+    required: yes
+    example: localhost
   - 
     name: port
-    default: 5557
+    required: yes
+    example: 5557
   - 
     name: sync
+    required: yes
   - 
     name: sync_channels
+    required: yes
   - 
     name: clock_offset
   - 
