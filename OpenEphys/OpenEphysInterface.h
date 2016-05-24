@@ -45,9 +45,10 @@ private:
     VariablePtr clockOffset;
     VariablePtr spikes;
     
-    boost::thread eventHandlerThread;
-    using scoped_lock = boost::mutex::scoped_lock;
-    boost::mutex mutex;
+    std::thread eventHandlerThread;
+    std::atomic_flag continueHandlingEvents;
+    std::mutex mutex;
+    using scoped_lock = std::lock_guard<decltype(mutex)>;
     
     bool running;
     MWTime lastSyncTime;

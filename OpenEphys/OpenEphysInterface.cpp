@@ -152,7 +152,8 @@ bool OpenEphysInterface::startDeviceIO() {
             return false;
         }
         
-        eventHandlerThread = boost::thread([this]() {
+        continueHandlingEvents.test_and_set();
+        eventHandlerThread = std::thread([this]() {
             handleEvents();
         });
         
@@ -199,7 +200,7 @@ void OpenEphysInterface::handleEvents() {
     MWTime lastSyncReceivedTime = currentTimeUS();
     MWTime lastSyncReceiptCheckTime = lastSyncReceivedTime;
     
-    while (true) {
+    while (continueHandlingEvents.test_and_set()) {
         const MWTime currentSyncReceiptCheckTime = currentTimeUS();
         if (currentSyncReceiptCheckTime - lastSyncReceiptCheckTime >= syncReceiptCheckInterval) {
             merror(M_IODEVICE_MESSAGE_DOMAIN,
@@ -267,16 +268,13 @@ void OpenEphysInterface::handleEvents() {
             merror(M_IODEVICE_MESSAGE_DOMAIN, "Open Ephys event has unexpected type (%hhu)", eventType);
             
         }
-    
-        // Give another thread a chance to terminate this one
-        boost::this_thread::interruption_point();
     }
 }
 
 
 void OpenEphysInterface::terminateEventHandlerThread() {
     if (eventHandlerThread.joinable()) {
-        eventHandlerThread.interrupt();
+        continueHandlingEvents.clear();
         eventHandlerThread.join();
     }
 }

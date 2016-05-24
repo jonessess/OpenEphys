@@ -13,8 +13,11 @@
 
 #ifdef __cplusplus
 
+#include <atomic>
+#include <mutex>
+#include <thread>
+
 #include <boost/noncopyable.hpp>
-#include <boost/thread/thread.hpp>
 
 #include <MWorksCore/ExpressionVariable.h>
 #include <MWorksCore/IODevice.h>
