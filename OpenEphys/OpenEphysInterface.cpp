@@ -15,11 +15,6 @@ BEGIN_NAMESPACE_MW
 BEGIN_NAMESPACE()
 
 
-inline void logZMQError(const std::string &message) {
-    merror(M_IODEVICE_MESSAGE_DOMAIN, "%s: %s", message.c_str(), zmq_strerror(zmq_errno()));
-}
-
-
 inline MWTime currentTimeUS() {
     return Clock::instance()->getCurrentTimeUS();
 }
@@ -69,8 +64,6 @@ BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent) == sizeof(OpenEphysEvent::Spike));
 END_NAMESPACE()
 
 
-const std::string OpenEphysInterface::HOSTNAME("hostname");
-const std::string OpenEphysInterface::PORT("port");
 const std::string OpenEphysInterface::SYNC("sync");
 const std::string OpenEphysInterface::SYNC_CHANNELS("sync_channels");
 const std::string OpenEphysInterface::CLOCK_OFFSET("clock_offset");
@@ -78,12 +71,10 @@ const std::string OpenEphysInterface::SPIKES("spikes");
 
 
 void OpenEphysInterface::describeComponent(ComponentInfo &info) {
-    IODevice::describeComponent(info);
+    OpenEphysBase::describeComponent(info);
     
     info.setSignature("iodevice/open_ephys_interface");
     
-    info.addParameter(HOSTNAME);
-    info.addParameter(PORT);
     info.addParameter(SYNC);
     info.addParameter(SYNC_CHANNELS);
     info.addParameter(CLOCK_OFFSET, false);
@@ -92,11 +83,8 @@ void OpenEphysInterface::describeComponent(ComponentInfo &info) {
 
 
 OpenEphysInterface::OpenEphysInterface(const ParameterValueMap &parameters) :
-    IODevice(parameters),
-    endpoint("tcp://" + parameters[HOSTNAME].str() + ":" + parameters[PORT].str()),
+    OpenEphysBase(parameters),
     sync(parameters[SYNC]),
-    zmqContext(nullptr, zmq_ctx_term),
-    zmqSocket(nullptr, zmq_close),
     running(false),
     lastSyncTime(0),
     lastSyncValue(-1)
@@ -130,13 +118,7 @@ OpenEphysInterface::~OpenEphysInterface() {
 
 
 bool OpenEphysInterface::initialize() {
-    zmqContext.reset(zmq_ctx_new());
-    if (!zmqContext) {
-        logZMQError("Unable to create ZeroMQ context");
-        return false;
-    }
-    
-    zmqSocket.reset(zmq_socket(zmqContext.get(), ZMQ_SUB));
+    zmqSocket.reset(zmq_socket(getZMQContext(), ZMQ_SUB));
     if (!zmqSocket) {
         logZMQError("Unable to create ZeroMQ socket");
         return false;

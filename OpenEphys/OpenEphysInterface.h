@@ -9,15 +9,15 @@
 #ifndef __OpenEphys__OpenEphysInterface__
 #define __OpenEphys__OpenEphysInterface__
 
+#include "OpenEphysBase.hpp"
+
 
 BEGIN_NAMESPACE_MW
 
 
-class OpenEphysInterface : public IODevice, boost::noncopyable {
+class OpenEphysInterface : public OpenEphysBase {
     
 public:
-    static const std::string HOSTNAME;
-    static const std::string PORT;
     static const std::string SYNC;
     static const std::string SYNC_CHANNELS;
     static const std::string CLOCK_OFFSET;
@@ -40,16 +40,12 @@ private:
     void handleEvents();
     void terminateEventHandlerThread();
     
-    const std::string endpoint;
     const VariablePtr sync;
     std::vector<std::uint8_t> syncChannels;
     VariablePtr clockOffset;
     VariablePtr spikes;
     
-    std::unique_ptr<void, decltype(&zmq_ctx_term)> zmqContext;
-    std::unique_ptr<void, decltype(&zmq_close)> zmqSocket;
     boost::thread eventHandlerThread;
-    
     using scoped_lock = boost::mutex::scoped_lock;
     boost::mutex mutex;
     

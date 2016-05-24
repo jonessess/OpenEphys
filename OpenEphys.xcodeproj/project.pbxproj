@@ -33,6 +33,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		E11BCBE31CF4DB4100041BAC /* OpenEphysBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E11BCBE11CF4DB4100041BAC /* OpenEphysBase.cpp */; };
 		E16A0C901B5FE94C00FB8EC1 /* OpenEphys.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = E16A0C7D1B5FE6DA00FB8EC1 /* OpenEphys.bundle */; };
 		E16A0C971B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */; };
 		E16A0C9A1B5FF01900FB8EC1 /* MWorksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */; };
@@ -74,6 +75,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E11BCBE11CF4DB4100041BAC /* OpenEphysBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysBase.cpp; sourceTree = "<group>"; };
+		E11BCBE21CF4DB4100041BAC /* OpenEphysBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OpenEphysBase.hpp; sourceTree = "<group>"; };
 		E16A0C7D1B5FE6DA00FB8EC1 /* OpenEphys.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenEphys.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16A0C811B5FE6DA00FB8EC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E16A0C881B5FE7F400FB8EC1 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 		E16A0C7F1B5FE6DA00FB8EC1 /* OpenEphys */ = {
 			isa = PBXGroup;
 			children = (
+				E11BCBE21CF4DB4100041BAC /* OpenEphysBase.hpp */,
+				E11BCBE11CF4DB4100041BAC /* OpenEphysBase.cpp */,
 				E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */,
 				E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */,
 				E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */,
@@ -240,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16A0C971B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp in Sources */,
+				E11BCBE31CF4DB4100041BAC /* OpenEphysBase.cpp in Sources */,
 				E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
