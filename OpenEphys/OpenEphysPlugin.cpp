@@ -7,6 +7,7 @@
 //
 
 #include "OpenEphysInterface.h"
+#include "OpenEphysNetworkEventsClient.hpp"
 
 
 BEGIN_NAMESPACE_MW
@@ -15,6 +16,7 @@ BEGIN_NAMESPACE_MW
 class OpenEphysPlugin : public Plugin {
     void registerComponents(boost::shared_ptr<ComponentRegistry> registry) override {
         registry->registerFactory<StandardComponentFactory, OpenEphysInterface>();
+        registry->registerFactory<StandardComponentFactory, OpenEphysNetworkEventsClient>();
     }
 };
 

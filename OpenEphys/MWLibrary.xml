@@ -24,4 +24,26 @@ Interface to the Open Ephys GUI application.  Requires an OE Event Broadcaster s
     </code>
   </MWElement>
 
+  <MWElement name="Open Ephys Network Events Client">
+    <match_signature>iodevice[@type="open_ephys_network_events_client"]</match_signature>
+    
+    <isa>IODevice</isa>
+
+    <icon>smallIOFolder</icon>
+    
+    <description>
+Interface to an Open Ephys Network Events module
+    </description>
+    
+    <code>
+      <iodevice type="open_ephys_network_events_client"
+                tag="Open Ephys Network Events Client"
+                hostname="localhost"
+                port="5556"
+                request=""
+                response=""
+                />
+    </code>
+  </MWElement>
+
 </MWElements>

@@ -28,8 +28,7 @@ OpenEphysBase::OpenEphysBase(const ParameterValueMap &parameters) :
     IODevice(parameters),
     endpoint("tcp://" + parameters[HOSTNAME].str() + ":" + parameters[PORT].str()),
     zmqSocket(nullptr, zmq_close)
-{
-}
+{ }
 
 
 void * OpenEphysBase::getZMQContext() {

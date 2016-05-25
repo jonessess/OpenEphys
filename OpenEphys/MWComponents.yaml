@@ -30,3 +30,31 @@ parameters:
     name: spikes
 
 
+---
+
+
+name: Open Ephys Network Events Client
+signature: iodevice/open_ephys_network_events_client
+isa: IODevice
+icon: smallIOFolder
+description: >
+    Interface to an Open Ephys
+    `Network Events <https://open-ephys.atlassian.net/wiki/display/OEW/Network+Events>`_
+    module
+parameters: 
+  - 
+    name: hostname
+    required: yes
+    example: localhost
+  - 
+    name: port
+    required: yes
+    example: 5556
+  - 
+    name: request
+    required: yes
+  - 
+    name: response
+    required: yes
+
+
