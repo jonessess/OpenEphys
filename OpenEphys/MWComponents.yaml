@@ -4,6 +4,7 @@
 name: Open Ephys Interface
 signature: iodevice/open_ephys_interface
 isa: IODevice
+platform: macos
 description: |
     Interface to the `Open Ephys GUI <http://www.open-ephys.org/gui/>`_
     application.  Requires an Open Ephys Event Broadcaster module listening on
@@ -96,6 +97,7 @@ parameters:
 name: Open Ephys Network Events Client
 signature: iodevice/open_ephys_network_events_client
 isa: IODevice
+platform: macos
 description: >
     Interface to a `Network Events <https://open-
     ephys.atlassian.net/wiki/display/OEW/Network+Events>`_ module in the `Open
