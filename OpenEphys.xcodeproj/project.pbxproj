@@ -38,7 +38,6 @@
 		E16A0C901B5FE94C00FB8EC1 /* OpenEphys.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = E16A0C7D1B5FE6DA00FB8EC1 /* OpenEphys.bundle */; };
 		E16A0C971B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */; };
 		E16A0C9A1B5FF01900FB8EC1 /* MWorksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */; };
-		E16A0C9D1B5FF07100FB8EC1 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */; };
 		E16A0C9F1B5FF09800FB8EC1 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */; };
 		E16A0CA21B60059100FB8EC1 /* OpenEphysInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */; };
 		E1A960B61B8E4E43003EEA23 /* MWLibrary.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1A960B51B8E4E43003EEA23 /* MWLibrary.xml */; };
@@ -87,7 +86,6 @@
 		E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysPlugin.cpp; sourceTree = "<group>"; };
 		E16A0C981B5FEA5600FB8EC1 /* OpenEphys-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenEphys-Prefix.pch"; sourceTree = "<group>"; };
 		E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MWorksCore.framework; path = /Library/Frameworks/MWorksCore.framework; sourceTree = "<absolute>"; };
-		E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = "/Library/Application Support/MWorks/Developer/lib/libboost_system.a"; sourceTree = "<absolute>"; };
 		E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "/Library/Application Support/MWorks/Developer/lib/libzmq.a"; sourceTree = "<absolute>"; };
 		E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysInterface.cpp; sourceTree = "<group>"; };
 		E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEphysInterface.h; sourceTree = "<group>"; };
@@ -101,7 +99,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16A0C9A1B5FF01900FB8EC1 /* MWorksCore.framework in Frameworks */,
-				E16A0C9D1B5FF07100FB8EC1 /* libboost_system.a in Frameworks */,
 				E16A0C9F1B5FF09800FB8EC1 /* libzmq.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +164,6 @@
 			isa = PBXGroup;
 			children = (
 				E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */,
-				E16A0C9C1B5FF07100FB8EC1 /* libboost_system.a */,
 				E16A0C9E1B5FF09800FB8EC1 /* libzmq.a */,
 			);
 			name = Frameworks;
@@ -204,12 +200,15 @@
 				TargetAttributes = {
 					E16A0C7C1B5FE6DA00FB8EC1 = {
 						CreatedOnToolsVersion = 6.4;
+						ProvisioningStyle = Automatic;
 					};
 					E16A0C8A1B5FE91600FB8EC1 = {
 						CreatedOnToolsVersion = 6.4;
+						ProvisioningStyle = Automatic;
 					};
 					E16A0C911B5FE96000FB8EC1 = {
 						CreatedOnToolsVersion = 6.4;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
