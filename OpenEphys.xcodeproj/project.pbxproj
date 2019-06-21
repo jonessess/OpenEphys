@@ -80,8 +80,6 @@
 		E11BCBE51CF4E57200041BAC /* OpenEphysNetworkEventsClient.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OpenEphysNetworkEventsClient.hpp; sourceTree = "<group>"; };
 		E16A0C7D1B5FE6DA00FB8EC1 /* OpenEphys.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenEphys.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16A0C811B5FE6DA00FB8EC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E16A0C881B5FE7F400FB8EC1 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
-		E16A0C891B5FE7F400FB8EC1 /* WARNING.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WARNING.txt; sourceTree = "<group>"; };
 		E16A0C961B5FE9DB00FB8EC1 /* OpenEphysPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysPlugin.cpp; sourceTree = "<group>"; };
 		E16A0C981B5FEA5600FB8EC1 /* OpenEphys-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenEphys-Prefix.pch"; sourceTree = "<group>"; };
 		E16A0C991B5FF01900FB8EC1 /* MWorksCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MWorksCore.framework; path = /Library/Frameworks/MWorksCore.framework; sourceTree = "<absolute>"; };
@@ -89,6 +87,8 @@
 		E16A0CA01B60059100FB8EC1 /* OpenEphysInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenEphysInterface.cpp; sourceTree = "<group>"; };
 		E16A0CA11B60059100FB8EC1 /* OpenEphysInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEphysInterface.h; sourceTree = "<group>"; };
 		E1E07EB01C04F4FC008DD97E /* MWComponents.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MWComponents.yaml; sourceTree = "<group>"; };
+		E1F7696C22BD545900024441 /* macOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = macOS.xcconfig; sourceTree = "<group>"; };
+		E1F7696D22BD545900024441 /* macOS_Plugin.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = macOS_Plugin.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,8 +150,8 @@
 		E16A0C871B5FE7A700FB8EC1 /* External Config */ = {
 			isa = PBXGroup;
 			children = (
-				E16A0C881B5FE7F400FB8EC1 /* Development.xcconfig */,
-				E16A0C891B5FE7F400FB8EC1 /* WARNING.txt */,
+				E1F7696C22BD545900024441 /* macOS.xcconfig */,
+				E1F7696D22BD545900024441 /* macOS_Plugin.xcconfig */,
 			);
 			name = "External Config";
 			path = "/Library/Application Support/MWorks/Developer/Xcode";
@@ -270,44 +270,24 @@
 /* Begin XCBuildConfiguration section */
 		E16A0C821B5FE6DA00FB8EC1 /* Development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E16A0C881B5FE7F400FB8EC1 /* Development.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				MTL_ENABLE_DEBUG_INFO = YES;
 			};
 			name = Development;
 		};
 		E16A0C851B5FE6DA00FB8EC1 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696D22BD545900024441 /* macOS_Plugin.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenEphys/OpenEphys-Prefix.pch";
 				INFOPLIST_FILE = OpenEphys/Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Development;
 		};
 		E16A0C8C1B5FE91600FB8EC1 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696C22BD545900024441 /* macOS.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -315,6 +295,7 @@
 		};
 		E16A0C931B5FE96000FB8EC1 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696C22BD545900024441 /* macOS.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
