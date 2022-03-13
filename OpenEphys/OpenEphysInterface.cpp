@@ -37,14 +37,22 @@ struct OpenEphysEvent {
     } __attribute__((packed));
     
     struct Spike {
+        std::uint8_t evtType;
+        std::uint8_t elecType;
+        std::uint16_t _source;  // Used internally by spike detector
+        std::uint16_t channel;
+        std::uint16_t electrodeID;
         std::int64_t timestamp;
+        std::uint16_t sortedID;
+
+/*        std::int64_t timestamp;
         std::int64_t timestampSoftware;
         std::uint16_t _source;  // Used internally by spike detector
         std::uint16_t nChannels;
         std::uint16_t nSamples;
         std::uint16_t sortedID;
         std::uint16_t electrodeID;
-        std::uint16_t channel;
+        std::uint16_t channel;  */
         /* Other fields ignored */
     } __attribute__((packed));
     
@@ -57,7 +65,8 @@ struct OpenEphysEvent {
 
 // Verify packing
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::TTL) == 13);
-BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::Spike) == 28);
+//BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::Spike) == 28);
+BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent::Spike) == 18);
 BOOST_STATIC_ASSERT(sizeof(OpenEphysEvent) == sizeof(OpenEphysEvent::Spike));
 
 
